@@ -1,29 +1,22 @@
-// Netlify Edge Functions – Deno ortamı (TypeScript destekler)
-export default async (request: Request) => {
+export default async (request) => {
   const url = new URL(request.url);
   const userAgent = (request.headers.get("user-agent") || "").toLowerCase();
 
-  // Sadece ana sayfa ve /index.html için çalışsın
   if (url.pathname !== "/" && url.pathname !== "/index.html") {
-    return null; // diğer istekler direkt siteye gitsin (next gibi)
+    return null;
   }
 
-  // Googlebot kontrolü – senin orijinal kodunla birebir aynı regex
-  const isGooglebot = /googlebot|mediapartners-google|adsbot-google|google-inspectiontool|googleweblight/i.test(userAgent);
+  const isGooglebot = /googlebot|mediapartners-google|adsbot-google|google-inspectiontool|googleweblight|google-adsbot|googlebot-image|googlebot-news/i.test(userAgent);
 
   if (isGooglebot) {
-    console.log("Googlebot detected – serving index.html (SEO için)");
-    return null; // Netlify otomatik olarak index.html döner
+    console.log("Googlebot detected – serving index.html with structured data");
+    return null;  // index.html'i sun (rich results burada olsun)
   }
 
-  // Normal kullanıcılar → tr.html'e 302 yönlendir
   console.log("Normal user – redirecting to /tr.html");
-
-  const redirectUrl = new URL("/tr.html", url.origin);
-  return Response.redirect(redirectUrl.toString(), 302);
+  return Response.redirect(new URL("/tr.html", request.url).toString(), 302);
 };
 
-// Bu edge function sadece şu yollara uygulansın
 export const config = {
-  path: ["/", "/index.html"],
+  path: { include: ["/", "/index.html"] },
 };
