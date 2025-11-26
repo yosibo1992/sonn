@@ -1,25 +1,31 @@
 export default async (request) => {
-  const url = new URL(request.url);
-  const ua = (request.headers.get("user-agent") || "").toLowerCase();
+  try {
+    const url = new URL(request.url);  // request.url tam URL içerir
+    const ua = (request.headers.get("user-agent") || "").toLowerCase();
 
-  // Sadece kök ve index.html için çalışsın
-  const pathname = url.pathname;
-  if (pathname !== "/" && pathname !== "/index.html") {
-    return null; // diğer yollar normal devam etsin
+    // Sadece ana sayfa ve index.html için çalışsın
+    const pathname = url.pathname;
+    if (pathname !== "/" && pathname !== "/index.html") {
+      return null;  // Diğer istekler devam etsin
+    }
+
+    // Googlebot kontrolü (senin regex'in aynısı)
+    const isGooglebot = /googlebot|mediapartners-google|adsbot-google|google-inspectiontool|googleweblight/i.test(ua);
+
+    if (isGooglebot) {
+      console.log("Googlebot detected – serving index.html");
+      return null;  // index.html dönsün (SEO/rich results için)
+    }
+
+    // Normal kullanıcı → tr.html'e yönlendir
+    console.log("Normal user – redirecting to /tr.html");
+    const origin = new URL(request.url).origin;  // Güvenli origin alma
+    return Response.redirect(new URL("/tr.html", origin).toString(), 302);
+  } catch (error) {
+    console.error("Edge Function error:", error);
+    return new Response("Internal Error", { status: 500 });  // Hata durumunda fallback
   }
-
-  // Googlebot kontrolü
-  const isGooglebot = /googlebot|mediapartners-google|adsbot-google|google-inspectiontool|googleweblight/i.test(ua);
-
-  if (isGooglebot) {
-    return null; // Googlebot index.html görsün
-  }
-
-  // Normal kullanıcı → tr.html'e yönlendir
-  return Response.redirect(new URL("/tr.html", url.origin).toString(), 302);
 };
 
-// Artık config burada da /* olarak tanımlı
-export const config = {
-  path: "/*"
-};
+// Path config (docs'a göre string veya object)
+export const config = { path: "/*" };  // Tüm yolları yakala, içerde filtrele
