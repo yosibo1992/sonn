@@ -7,3 +7,7 @@
 
 # Functions konfigi (aşağıdaki redirect için)
 functions = "netlify/functions"
+
+[[edge_functions]]
+  function = "redirect"
+  path = ["/", "/index.html"]
