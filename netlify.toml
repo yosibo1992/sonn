@@ -1,0 +1,9 @@
+[build]
+  command = "npm run build"  # package.json'daki script
+  publish = "public"         # Build çıktın (dist/public klasörü)
+
+[build.environment]
+  NODE_VERSION = "18"        # v22 yerine v18 – native hataları önler
+
+# Functions konfigi (aşağıdaki redirect için)
+functions = "netlify/functions"
