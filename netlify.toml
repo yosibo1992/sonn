@@ -1,12 +1,9 @@
 [build]
-  command = "npm run build"  # package.json'daki script
-  publish = "public"         # Build çıktın (dist/public klasörü)
+  publish = "public"
+  command = "echo 'No build required'"
 
 [build.environment]
-  NODE_VERSION = "18"        # v22 yerine v18 – native hataları önler
-
-# Functions konfigi (aşağıdaki redirect için)
-functions = "netlify/functions"
+  NODE_VERSION = "18"
 
 [[edge_functions]]
   function = "redirect"
