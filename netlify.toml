@@ -1,6 +1,8 @@
 [build]
-  publish = "public"
-  command = "echo 'No build required'"
+  # Build komutu yok, sadece dosyaları yayınla
+  command = "echo 'No build step needed'"
+  # Kök dizindeki dosyaları doğrudan yayınla (public klasörü yok)
+  publish = "."
 
 [build.environment]
   NODE_VERSION = "18"
