@@ -1,0 +1,8 @@
+[build]
+  publish = "public"        # ya da "dist", "build" – senin build çıktın nerdeyse
+  functions = "netlify/functions"   # klasik functions varsa
+  edge_functions = "netlify/edge-functions"
+
+[[edge_functions]]
+  function = "root-redirect"
+  path = ["/", "/index.html"]
