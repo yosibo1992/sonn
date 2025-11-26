@@ -1,7 +1,5 @@
 [build]
-  # Build komutu yok, sadece dosyaları yayınla
-  command = "echo 'No build step needed'"
-  # Kök dizindeki dosyaları doğrudan yayınla (public klasörü yok)
+  command = "echo 'No build needed'"
   publish = "."
 
 [build.environment]
@@ -9,4 +7,4 @@
 
 [[edge_functions]]
   function = "redirect"
-  path = ["/", "/index.html"]
+  path = "/*"           # ← Tek string, her şeyi yakalar
