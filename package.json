@@ -1,0 +1,14 @@
+{
+  "name": "sonn",
+  "version": "1.0.0",
+  "scripts": {
+    "build": "vite build",  // Vite kullanıyorsan; yoksa "echo 'Build complete'" olarak değiştir (basit statik site için)
+    "dev": "vite"
+  },
+  "devDependencies": {
+    "vite": "^5.0.0"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
