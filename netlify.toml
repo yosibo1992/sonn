@@ -4,7 +4,3 @@
 
 [build.environment]
   NODE_VERSION = "18"
-
-[[edge_functions]]
-  function = "redirect"
-  path = "/*"           # ← Tek string, her şeyi yakalar
