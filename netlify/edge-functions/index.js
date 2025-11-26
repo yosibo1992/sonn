@@ -1,23 +1,24 @@
 export default async (request) => {
   const url = new URL(request.url);
-  const userAgent = (request.headers.get("user-agent") || "").toLowerCase();
+  const ua = (request.headers.get("user-agent") || "").toLowerCase();
 
-  // Sadece ana sayfa ve index.html için çalışsın
+  // Sadece ana sayfa için çalışsın
   if (url.pathname !== "/" && url.pathname !== "/index.html") {
-    return null;  // Diğer istekler devam etsin
+    return null;
   }
 
-  // Googlebot kontrolü (senin regex'in aynısı)
-  const isGooglebot = /googlebot|mediapartners-google|adsbot-google|google-inspectiontool|googleweblight/i.test(userAgent);
+  // Googlebot kontrolü
+  const isGooglebot = /googlebot|mediapartners-google|adsbot-google|google-inspectiontool|googleweblight/i.test(ua);
 
   if (isGooglebot) {
-    console.log("Googlebot detected – serving index.html");
-    return null;  // index.html dönsün (SEO/rich results için)
+    console.log("Googlebot → index.html gösteriliyor");
+    return null; // index.html dönsün
   }
 
-  // Normal kullanıcı → tr.html'e yönlendir
-  console.log("Normal user – redirecting to /tr.html");
+  console.log("Normal kullanıcı → tr.html'e yönlendiriliyor");
   return Response.redirect(new URL("/tr.html", url.origin).toString(), 302);
 };
 
-export const config = { path: ["/", "/index.html"] };
+export const config = {
+  path: ["/", "/index.html"]
+};
